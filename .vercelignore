@@ -1,0 +1,8 @@
+.env
+.env.*
+.git
+.vercel
+node_modules
+runpod-worker/.venv
+runpod-worker/__pycache__
+*.pyc

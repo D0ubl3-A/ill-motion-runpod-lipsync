@@ -1,0 +1,12 @@
+.vercel
+.env
+.env.*
+node_modules
+dist
+coverage
+*.log
+*.pyc
+__pycache__
+.venv
+runpod-worker/.venv
+artifacts

@@ -1,0 +1,13 @@
+{
+  "name": "runpod-ai-studio-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/verify-env.mjs",
+    "verify": "node scripts/verify-env.mjs"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}

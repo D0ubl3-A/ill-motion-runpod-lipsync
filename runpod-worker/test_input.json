@@ -1,0 +1,18 @@
+{
+  "input": {
+    "video_url": "https://example.com/input.mp4",
+    "audio_url": "https://example.com/audio.wav",
+    "output_upload_url": "https://example.com/signed-upload-url",
+    "output_url": "https://example.com/final-output.mp4",
+    "audio_mode": "voiceover",
+    "render_tier": "standard",
+    "identity": {
+      "profileId": "character-001",
+      "referenceUrls": [],
+      "antiIdentityBlending": true
+    },
+    "max_video_seconds": 60,
+    "inference_steps": 20,
+    "guidance_scale": 1.5
+  }
+}

@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ILLCO Lip Sync Command</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07090d;
+        --panel: rgba(12, 15, 22, 0.78);
+        --panel-strong: rgba(18, 22, 31, 0.92);
+        --line: rgba(255, 255, 255, 0.14);
+        --text: #f7f9fc;
+        --muted: rgba(247, 249, 252, 0.68);
+        --cyan: #76e8ff;
+        --green: #8dffbf;
+        --rose: #ff7187;
+        --gold: #ffd166;
+        --blue: #8ea8ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at 16% 14%, rgba(118, 232, 255, 0.2), transparent 27%),
+          radial-gradient(circle at 82% 10%, rgba(255, 113, 135, 0.16), transparent 29%),
+          radial-gradient(circle at 50% 100%, rgba(141, 255, 191, 0.12), transparent 34%),
+          linear-gradient(135deg, #07090d 0%, #10141d 52%, #07090d 100%);
+        color: var(--text);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      main {
+        width: min(1440px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 24px 0 42px;
+      }
+
+      .shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(390px, 0.92fr);
+        gap: 18px;
+        align-items: stretch;
+      }
+
+      .hero,
+      .panel,
+      .proof-strip {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
+        backdrop-filter: blur(18px);
+      }
+
+      .hero {
+        min-height: 636px;
+        position: relative;
+        overflow: hidden;
+        padding: 32px;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        background-size: 46px 46px;
+        mask-image: linear-gradient(180deg, #000, transparent 84%);
+        pointer-events: none;
+      }
+
+      .hero > * {
+        position: relative;
+      }
+
+      .eyebrow,
+      .label {
+        margin: 0 0 8px;
+        color: var(--cyan);
+        font-size: 0.76rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        max-width: 770px;
+        margin: 0;
+        font-size: clamp(3.2rem, 7vw, 6.8rem);
+        line-height: 0.86;
+      }
+
+      .lede {
+        max-width: 760px;
+        margin: 20px 0 0;
+        color: var(--muted);
+        font-size: clamp(1rem, 1.8vw, 1.22rem);
+        line-height: 1.56;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .cinema {
+        min-height: 280px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        border-radius: 8px;
+        background: linear-gradient(145deg, rgba(118, 232, 255, 0.1), rgba(255, 113, 135, 0.08)), #0a0d13;
+      }
+
+      .frame {
+        position: absolute;
+        inset: 18px;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 16px;
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 8px;
+        background:
+          radial-gradient(circle at 30% 22%, rgba(141, 255, 191, 0.18), transparent 24%),
+          linear-gradient(155deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+        animation: frameCycle 10s infinite;
+      }
+
+      .frame:nth-child(2) {
+        animation-delay: 2.5s;
+      }
+
+      .frame:nth-child(3) {
+        animation-delay: 5s;
+      }
+
+      .frame:nth-child(4) {
+        animation-delay: 7.5s;
+      }
+
+      .frame strong {
+        font-size: 1.22rem;
+      }
+
+      .face {
+        width: min(34vw, 168px);
+        aspect-ratio: 1;
+        align-self: center;
+        justify-self: center;
+        border-radius: 50%;
+        border: 2px solid rgba(118, 232, 255, 0.55);
+        background:
+          radial-gradient(circle at 50% 62%, rgba(255, 113, 135, 0.36) 0 8%, transparent 9%),
+          radial-gradient(circle at 38% 42%, #f7f9fc 0 5%, transparent 6%),
+          radial-gradient(circle at 62% 42%, #f7f9fc 0 5%, transparent 6%),
+          radial-gradient(circle at 50% 51%, rgba(247, 249, 252, 0.7) 0 4%, transparent 5%),
+          linear-gradient(145deg, rgba(118, 232, 255, 0.22), rgba(255, 209, 102, 0.18));
+        box-shadow: 0 0 42px rgba(118, 232, 255, 0.2);
+      }
+
+      .meter {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 8px;
+      }
+
+      .meter i {
+        height: 36px;
+        border-radius: 4px;
+        background: linear-gradient(180deg, var(--green), rgba(118, 232, 255, 0.26));
+        transform-origin: bottom;
+        animation: bar 0.7s ease-in-out infinite alternate;
+      }
+
+      .meter i:nth-child(2n) {
+        animation-delay: 0.18s;
+      }
+
+      .meter i:nth-child(3n) {
+        animation-delay: 0.32s;
+      }
+
+      .guard-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      .guard {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.11);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .guard span {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .guard strong {
+        color: var(--green);
+        font-size: 0.84rem;
+      }
+
+      .panel {
+        padding: 22px;
+      }
+
+      .form {
+        display: grid;
+        gap: 14px;
+      }
+
+      .status-row,
+      .segmented,
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .status-pill,
+      button,
+      input,
+      select {
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+      }
+
+      .status-pill {
+        padding: 9px 11px;
+        font-size: 0.86rem;
+      }
+
+      .status-pill.good {
+        border-color: rgba(141, 255, 191, 0.38);
+        color: var(--green);
+      }
+
+      .status-pill.warn {
+        border-color: rgba(255, 209, 102, 0.42);
+        color: var(--gold);
+      }
+
+      label {
+        display: grid;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 0.88rem;
+        font-weight: 700;
+      }
+
+      input,
+      select {
+        width: 100%;
+        min-height: 43px;
+        padding: 0 12px;
+        font: inherit;
+      }
+
+      select {
+        appearance: none;
+      }
+
+      .two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      button {
+        min-height: 43px;
+        padding: 0 14px;
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      button.primary {
+        border-color: rgba(118, 232, 255, 0.48);
+        background: linear-gradient(135deg, rgba(118, 232, 255, 0.3), rgba(141, 255, 191, 0.18));
+      }
+
+      button.secondary {
+        color: var(--muted);
+      }
+
+      .tier-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .tier {
+        min-height: 116px;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.045);
+        cursor: pointer;
+      }
+
+      .tier[aria-selected="true"] {
+        border-color: rgba(118, 232, 255, 0.6);
+        background: rgba(118, 232, 255, 0.1);
+      }
+
+      .tier strong,
+      .proof-card strong {
+        display: block;
+      }
+
+      .tier span,
+      .proof-card span,
+      .fine {
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.45;
+      }
+
+      .proof-strip {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 18px;
+        padding: 14px;
+      }
+
+      .proof-card {
+        min-height: 102px;
+        padding: 14px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .result {
+        min-height: 94px;
+        padding: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.18);
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.55;
+        white-space: pre-wrap;
+      }
+
+      @keyframes frameCycle {
+        0%, 100% {
+          opacity: 0;
+          transform: translateX(24px) scale(0.97);
+          filter: blur(5px);
+        }
+
+        10%, 26% {
+          opacity: 1;
+          transform: translateX(0) scale(1);
+          filter: blur(0);
+        }
+
+        34% {
+          opacity: 0;
+          transform: translateX(-18px) scale(0.98);
+          filter: blur(5px);
+        }
+      }
+
+      @keyframes bar {
+        from {
+          transform: scaleY(0.35);
+        }
+
+        to {
+          transform: scaleY(1);
+        }
+      }
+
+      @media (max-width: 1040px) {
+        .shell,
+        .hero-grid,
+        .proof-strip {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          min-height: auto;
+        }
+      }
+
+      @media (max-width: 680px) {
+        main {
+          width: min(100vw - 20px, 1440px);
+        }
+
+        .hero,
+        .panel {
+          padding: 18px;
+        }
+
+        .two,
+        .tier-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+
+        .frame {
+          position: relative;
+          inset: auto;
+        }
+
+        .frame:not(:first-child) {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="shell">
+        <div class="hero">
+          <p class="eyebrow">ILLCO Lip Sync Command</p>
+          <h1>Turn voiceovers and songs into character-led videos.</h1>
+          <p class="lede">
+            A RunPod Serverless lip-sync pipeline for custom voiceovers, uploaded music, and music-video clips.
+            The GPU only runs during lip-sync jobs, with identity guards and collaboration limits built into the job contract.
+          </p>
+
+          <div class="hero-grid">
+            <div class="cinema" aria-label="Animated lip sync preview">
+              <article class="frame">
+                <strong>Upload source video</strong>
+                <div class="face" aria-hidden="true"></div>
+                <span class="fine">One clear face, visible mouth, stable lighting.</span>
+              </article>
+              <article class="frame">
+                <strong>Add voiceover or music</strong>
+                <div class="meter" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+                <span class="fine">Audio is normalized before GPU render.</span>
+              </article>
+              <article class="frame">
+                <strong>Run identity preflight</strong>
+                <div class="guard-grid">
+                  <div class="guard"><span>Face count</span><strong>single</strong></div>
+                  <div class="guard"><span>Mouth visibility</span><strong>clear</strong></div>
+                  <div class="guard"><span>Blend policy</span><strong>locked</strong></div>
+                </div>
+                <span class="fine">Bad clips fail before spending GPU time.</span>
+              </article>
+              <article class="frame">
+                <strong>Export final video</strong>
+                <div class="meter" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+                <span class="fine">Output writes directly to signed storage.</span>
+              </article>
+            </div>
+
+            <div class="guard-grid" data-demo="guards">
+              <div class="guard"><span>GPU scope</span><strong>lip sync only</strong></div>
+              <div class="guard"><span>Billing</span><strong>workersMin 0</strong></div>
+              <div class="guard"><span>Collaboration</span><strong>owner + 2</strong></div>
+              <div class="guard"><span>Identity</span><strong>anti-blend</strong></div>
+              <div class="guard"><span>Job mode</span><strong>async</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="panel" aria-label="Lip sync job composer">
+          <p class="label">Job composer</p>
+          <div class="status-row" id="health">
+            <span class="status-pill warn">Checking bridge...</span>
+          </div>
+
+          <form class="form" id="jobForm">
+            <div class="two">
+              <label>
+                Audio mode
+                <select id="audioMode" name="audioMode">
+                  <option value="voiceover">Custom voiceover</option>
+                  <option value="music">Music upload</option>
+                </select>
+              </label>
+              <label>
+                Render tier
+                <select id="tierSelect" name="renderTier">
+                  <option value="economy">Economy</option>
+                  <option value="standard" selected>Standard</option>
+                  <option value="precision">Precision</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="tier-grid" data-demo="tiers">
+              <button class="tier" type="button" data-tier="economy" aria-selected="false">
+                <strong>Economy</strong>
+                <span>30 seconds, low-cost preview. Suggested $0.75.</span>
+              </button>
+              <button class="tier" type="button" data-tier="standard" aria-selected="true">
+                <strong>Standard</strong>
+                <span>75 seconds, default clip. Suggested $1.49.</span>
+              </button>
+              <button class="tier" type="button" data-tier="precision" aria-selected="false">
+                <strong>Precision</strong>
+                <span>120 seconds, higher quality. Suggested $2.99.</span>
+              </button>
+            </div>
+
+            <label>
+              Source video signed URL
+              <input id="videoUrl" name="videoUrl" autocomplete="off" placeholder="https://storage.example/source-video.mp4">
+            </label>
+            <label>
+              Voiceover or music signed URL
+              <input id="audioUrl" name="audioUrl" autocomplete="off" placeholder="https://storage.example/audio.wav">
+            </label>
+            <label>
+              Result upload URL
+              <input id="outputUploadUrl" name="outputUploadUrl" autocomplete="off" placeholder="https://storage.example/signed-put-url">
+            </label>
+            <label>
+              Final result URL
+              <input id="outputUrl" name="outputUrl" autocomplete="off" placeholder="https://storage.example/final-output.mp4">
+            </label>
+
+            <div class="two">
+              <label>
+                Collaborator 1
+                <input id="collab1" autocomplete="off" placeholder="editor@example.com">
+              </label>
+              <label>
+                Collaborator 2
+                <input id="collab2" autocomplete="off" placeholder="producer@example.com">
+              </label>
+            </div>
+
+            <div class="actions">
+              <button class="primary" type="submit" data-demo="submit">Submit lip-sync job</button>
+              <button class="secondary" type="button" id="fillDemo">Fill safe demo payload</button>
+            </div>
+          </form>
+
+          <p class="label" style="margin-top: 18px;">Proof output</p>
+          <div class="result" id="result" data-demo="result">Ready. The route submits real RunPod jobs only after RUNPOD_ENDPOINT_ID and signed storage URLs are configured.</div>
+        </aside>
+      </section>
+
+      <section class="proof-strip" aria-label="Hackathon proof summary">
+        <div class="proof-card">
+          <strong id="cost">Margin loading</strong>
+          <span>Real margin endpoint estimates compute cost by tier.</span>
+        </div>
+        <div class="proof-card">
+          <strong>Anti-blend preflight</strong>
+          <span>Rejects multi-face or tiny-face videos before GPU render.</span>
+        </div>
+        <div class="proof-card">
+          <strong>Async queue</strong>
+          <span>Jobs submit fast, then poll status while RunPod renders.</span>
+        </div>
+        <div class="proof-card">
+          <strong>Storage-safe</strong>
+          <span>Large media moves by signed URL, not through Vercel memory.</span>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const tiers = {
+        economy: { seconds: 75, price: 0.75, max: 30 },
+        standard: { seconds: 180, price: 1.49, max: 75 },
+        precision: { seconds: 360, price: 2.99, max: 120 }
+      };
+
+      const health = document.getElementById("health");
+      const result = document.getElementById("result");
+      const tierSelect = document.getElementById("tierSelect");
+      const cost = document.getElementById("cost");
+
+      async function loadHealth() {
+        try {
+          const response = await fetch("/api/runpod/health", { cache: "no-store" });
+          const data = await response.json();
+          health.innerHTML = "";
+          const status = document.createElement("span");
+          status.className = `status-pill ${data.ok ? "good" : "warn"}`;
+          status.textContent = data.ok ? "RunPod bridge configured" : `Setup needed: ${(data.missing || []).join(", ") || "environment"}`;
+          health.appendChild(status);
+
+          const protectedPill = document.createElement("span");
+          protectedPill.className = `status-pill ${data.protected ? "good" : "warn"}`;
+          protectedPill.textContent = data.protected ? "GPU route protected" : "Add LIPSYNC_API_TOKEN before launch";
+          health.appendChild(protectedPill);
+        } catch {
+          health.innerHTML = '<span class="status-pill warn">Local static preview: API unavailable</span>';
+        }
+      }
+
+      async function loadMargin() {
+        const tier = tierSelect.value;
+        try {
+          const response = await fetch(`/api/runpod/margin?tier=${encodeURIComponent(tier)}`, { cache: "no-store" });
+          const data = await response.json();
+          cost.textContent = `${tier}: $${data.computeCost} compute / ${data.grossMarginPercent}% margin`;
+        } catch {
+          const t = tiers[tier];
+          const compute = ((0.69 / 3600) * t.seconds).toFixed(4);
+          cost.textContent = `${tier}: about $${compute} compute`;
+        }
+      }
+
+      function syncTier(nextTier) {
+        tierSelect.value = nextTier;
+        document.querySelectorAll(".tier").forEach((button) => {
+          button.setAttribute("aria-selected", String(button.dataset.tier === nextTier));
+        });
+        loadMargin();
+      }
+
+      document.querySelectorAll(".tier").forEach((button) => {
+        button.addEventListener("click", () => syncTier(button.dataset.tier));
+      });
+
+      tierSelect.addEventListener("change", () => syncTier(tierSelect.value));
+
+      document.getElementById("fillDemo").addEventListener("click", () => {
+        document.getElementById("videoUrl").value = "https://assets.illco.example/demo/one-face-source.mp4";
+        document.getElementById("audioUrl").value = "https://assets.illco.example/demo/voiceover.wav";
+        document.getElementById("outputUploadUrl").value = "https://assets.illco.example/demo/signed-output-put";
+        document.getElementById("outputUrl").value = "https://assets.illco.example/demo/final-lipsync.mp4";
+        document.getElementById("collab1").value = "editor@illco.ai";
+        document.getElementById("collab2").value = "producer@illco.ai";
+        result.textContent = "Demo payload filled. These sample URLs are placeholders for signed storage URLs; submit only after real media URLs are generated by the app.";
+      });
+
+      document.getElementById("jobForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const payload = {
+          videoUrl: document.getElementById("videoUrl").value,
+          audioUrl: document.getElementById("audioUrl").value,
+          outputUploadUrl: document.getElementById("outputUploadUrl").value,
+          outputUrl: document.getElementById("outputUrl").value,
+          audioMode: document.getElementById("audioMode").value,
+          renderTier: tierSelect.value,
+          collaborators: [document.getElementById("collab1").value, document.getElementById("collab2").value].filter(Boolean),
+          identity: {
+            profileId: "single-source-character",
+            referenceUrls: [],
+            antiIdentityBlending: true
+          }
+        };
+
+        result.textContent = "Submitting real RunPod job...";
+        try {
+          const response = await fetch("/api/runpod/lipsync", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          const data = await response.json();
+          result.textContent = JSON.stringify(data, null, 2);
+        } catch (error) {
+          result.textContent = `Submit failed: ${error.message}`;
+        }
+      });
+
+      loadHealth();
+      loadMargin();
+    </script>
+  </body>
+</html>
