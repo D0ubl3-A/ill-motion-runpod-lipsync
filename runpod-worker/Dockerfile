@@ -11,12 +11,14 @@ ENV MAX_AUDIO_BYTES=104857600
 ARG LATENTSYNC_REF=a229c3948406bc2cf6eaf4873e662e70c6a04746
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
     ca-certificates \
     ffmpeg \
     git \
     libglib2.0-0 \
     libgl1 \
     python3 \
+    python3-dev \
     python3-pip \
     python3-venv \
     && rm -rf /var/lib/apt/lists/*
